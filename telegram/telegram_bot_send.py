@@ -29,9 +29,8 @@ def get_telegram_id(username: str, bot_token: str) -> int | None:
 def send_telegram_to_user(username: str, msg: str, bot_token: str):
     user_id = get_telegram_id(username, bot_token)
     if user_id is None:
-        logging.error("Не могу отправить сообщение в Telegram потому что user id не был определён!\n"
-                      "Пожалусйста проверьте \"username\" в конфигурации!")
-        return
+        raise Exception("Не могу отправить сообщение в Telegram потому что user id не был определён!\n"
+                        "Пожалусйста проверьте \"username\" в конфигурации!")
 
     telegram_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {

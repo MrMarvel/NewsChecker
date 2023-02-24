@@ -56,7 +56,8 @@ def inform_telegram(msg: str):
     try:
         send_telegram_to_user(cfg.get('telegram', 'username'), msg, cfg.get('telegram', 'bot_token', raw=True))
     except Exception as e:
-        logging.exception("Send telegram exception: ", e)
+        logging.exception(f"Send telegram exception: {e}")
+        raise e
 
 
 def make_telegram_event_text(e: Dict, event_num: int) -> str:
@@ -94,7 +95,7 @@ def inform(n1: List[Dict], n2: List[Dict], check_time: datetime):
             inform_telegram(msg)
         except Exception as e:
             failed_counter += 1
-            logging.exception(e)
+            logging.warning("Способ рассылки Telegram оказался неудачным.")
     if failed_counter == failed_counter_max:
         raise Exception("Полная неудача отправки")
 
