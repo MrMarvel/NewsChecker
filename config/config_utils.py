@@ -1,6 +1,7 @@
 import configparser
 import logging
 import os
+import sys
 from dataclasses import dataclass
 
 
@@ -81,6 +82,10 @@ def create_or_update_config():
             'bot_token': 'INSERT_YOUR_BOT_TOKEN',
             'username': 'ExampleUser'
         }
+        # Write config to file
+        with open(config_path, 'w', encoding='utf-8') as config_file:
+            config.write(config_file)
+        sys.exit(0)
 
     # Write config to file
     with open(config_path, 'w', encoding='utf-8') as config_file:
