@@ -62,15 +62,15 @@ def inform_telegram(msg: str):
 
 def make_telegram_event_text(e: Dict, event_num: int) -> str:
     msg = ""
-    date = e.get('date', datetime.today())
+    e_date = e.get('date', datetime.today())
     link = e.get('link', None)
     if event_num != 0:
         msg += "\n"
     msg += f"{event_num + 1}. {e.get('title')}\n"
-    if type(date) is date:
-        msg += f"{date.strftime('%d.%m.%Y')}\n"
+    if type(e_date) is date:
+        msg += f"{e_date.strftime('%d.%m.%Y')}\n"
     else:
-        msg += f"{date.strftime('%d.%m.%Y %H:%M:%S')}\n"
+        msg += f"{e_date.strftime('%d.%m.%Y %H:%M:%S')}\n"
     msg += f"{e.get('description')}...\n"
     if link is not None:
         msg += f"{link}\n"
