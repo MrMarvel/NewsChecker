@@ -184,6 +184,25 @@ def inform_documents(documents: List[Dict], check_time: datetime):
             msg_sections[0] += f"Документы ({len(documents)} шт.):\n"
             for i, doc in enumerate(documents):
                 msg_section = make_telegram_document_text(doc, i)
+
+                # Форматириуем документ, чтобы не превысить лимит слов
+                words = msg_section.split(' ')
+                max_words = int(cfg.get('documents', 'max_words_in_document', fallback=4096))
+                if len(words) > max_words:
+                    first_part = words[:max_words]
+                    second_part = None
+                    for i in range(max_words, len(words)):
+                        if '.' in words[i]:
+                            second_part = deepcopy(words[max_words:i+1])
+                            second_part[-1] = second_part[-1][:second_part[-1].index('.')+1]
+                            break
+                    if second_part is None:
+                        msg_section = ' '.join(first_part) + '...\n'
+                    else:
+                        msg_section = ' '.join(first_part+second_part) + '\n...\n'
+                    msg_section += f"Подробнее: {doc.get('link')}\n"
+
+
                 if len(msg_sections[-1]) + len(msg_section) > 4096:
                     msg_sections.append(msg_section)
                 else:

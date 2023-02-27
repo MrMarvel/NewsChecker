@@ -39,7 +39,6 @@ def send_telegram_to_user(username: str, msg: str, bot_token: str):
         time.sleep(min_period_between_sends - (now - last_send_time))
     last_send_time = time.time()
 
-
     user_id = get_telegram_id(username, bot_token)
     if user_id is None:
         raise Exception("Не могу отправить сообщение в Telegram потому что user id не был определён!\n"

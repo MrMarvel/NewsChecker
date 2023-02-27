@@ -82,6 +82,10 @@ def create_or_update_config():
         if not config.has_option('documents', 'max_pages_per_check'):
             config.set('documents', 'max_pages_per_check', '2')
 
+        # Проверить есть ли настройка 'max_words_in_document' и создать её, если нет
+        if not config.has_option('documents', 'max_words_in_document'):
+            config.set('documents', 'max_words_in_document', '35')
+
     # If config file does not exist, create it with default settings
     else:
         logging.info(f"Не было найдено \"{ConfigConstants.CONFIG_FILENAME}\". Создаём новый.")
@@ -98,10 +102,11 @@ def create_or_update_config():
         }
         config['telegram'] = {
             'bot_token': 'INSERT_YOUR_BOT_TOKEN',
-            'username': 'ExampleUser'
+            'username': 'ExampleUser',
         }
         config['documents'] = {
-            'max_pages_per_check': '2'
+            'max_pages_per_check': '2',
+            'max_words_in_document': '35'
         }
         # Write config to file
         with open(config_path, 'w', encoding='utf-8') as config_file:
