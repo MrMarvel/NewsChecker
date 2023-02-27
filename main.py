@@ -235,7 +235,7 @@ if __name__ == '__main__':
         # os.rename('latest_log.txt', edit_date.strftime("log1.txt"))
     for handler in logging.root.handlers[:]:
         logging.root.removeHandler(handler)
-    logging.basicConfig(filename='latest_log.txt', filemode='w', level=logging.NOTSET)
+    logging.basicConfig(filename='latest_log.txt', filemode='w', encoding='utf-8', level=logging.NOTSET)
     logging.debug("Начало работы программы")
 
     if cfg.get('general', 'check_news', fallback='false').lower() == 'true':
