@@ -1,5 +1,5 @@
 config.ini
-last_check.txt
+last_check*.txt
 latest_log.txt
 log*.txt
 

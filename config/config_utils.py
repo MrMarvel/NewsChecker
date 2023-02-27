@@ -38,6 +38,14 @@ def create_or_update_config():
         if not config.has_option('general', 'enable_telegram'):
             config.set('general', 'enable_telegram', 'true')
 
+        # Проверить есть ли настройка 'check_news' и создать её, если нет
+        if not config.has_option('general', 'check_news'):
+            config.set('general', 'check_news', 'true')
+
+        # Проверить есть ли настройка 'check_documents' и создать её, если нет
+        if not config.has_option('general', 'check_documents'):
+            config.set('general', 'check_documents', 'true')
+
         # Check if 'email' section exists, create it if not
         if not config.has_section(ConfigConstants.EMAIL_TOPIC):
             config.add_section(ConfigConstants.EMAIL_TOPIC)
@@ -66,12 +74,22 @@ def create_or_update_config():
         if not config.has_option('telegram', 'username'):
             config.set('telegram', 'username', 'ExampleUser')
 
+        # Проверить есть ли раздел 'documents' и создать его, если нет
+        if not config.has_section('documents'):
+            config.add_section('documents')
+
+        # Проверить есть ли настройка 'max_pages_per_check' и создать её, если нет
+        if not config.has_option('documents', 'max_pages_per_check'):
+            config.set('documents', 'max_pages_per_check', '2')
+
     # If config file does not exist, create it with default settings
     else:
         logging.info(f"Не было найдено \"{ConfigConstants.CONFIG_FILENAME}\". Создаём новый.")
         config['general'] = {
             'enable_email': 'true',
-            'enable_telegram': 'true'
+            'enable_telegram': 'true',
+            'check_news': 'true',
+            'check_documents': 'true'
         }
         config[ConfigConstants.EMAIL_TOPIC] = {
             ConfigConstants.FROM_EMAIL: ConfigConstants.EMAIL_DEFAULT,
@@ -81,6 +99,9 @@ def create_or_update_config():
         config['telegram'] = {
             'bot_token': 'INSERT_YOUR_BOT_TOKEN',
             'username': 'ExampleUser'
+        }
+        config['documents'] = {
+            'max_pages_per_check': '2'
         }
         # Write config to file
         with open(config_path, 'w', encoding='utf-8') as config_file:

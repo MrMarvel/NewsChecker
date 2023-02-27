@@ -1,4 +1,5 @@
 import logging
+import time
 
 import requests
 
@@ -26,7 +27,19 @@ def get_telegram_id(username: str, bot_token: str) -> int | None:
         return None
 
 
+last_send_time = None
+min_period_between_sends = 1  # seconds
+
+
 def send_telegram_to_user(username: str, msg: str, bot_token: str):
+    global last_send_time
+    now = time.time()
+    if last_send_time is not None and now - last_send_time < min_period_between_sends:
+        logging.info("Too fast sending messages. Waiting...")
+        time.sleep(min_period_between_sends - (now - last_send_time))
+    last_send_time = time.time()
+
+
     user_id = get_telegram_id(username, bot_token)
     if user_id is None:
         raise Exception("Не могу отправить сообщение в Telegram потому что user id не был определён!\n"
@@ -42,4 +55,5 @@ def send_telegram_to_user(username: str, msg: str, bot_token: str):
     if response.status_code == 200:
         logging.info("Message sent successfully!")
     else:
-        logging.error(f"Error sending message: {response.text}")
+        logging.error(f"Error sending message: {response.text}. Ошибка: {response.content}")
+        raise Exception(f"Error sending message: {response.text}. Ошибка: {response.content}")
