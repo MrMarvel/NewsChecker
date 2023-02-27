@@ -1,36 +1,9 @@
-from datetime import date
 from typing import Dict, List
 
 import requests
 from bs4 import BeautifulSoup, Tag, ResultSet
 
-MONTHS = [
-    'ЯНВАРЯ',
-    'ФЕВРАЛЯ',
-    'МАРТА',
-    'АПРЕЛЯ',
-    'МАЯ',
-    'ИЮНЯ',
-    'ИЮЛЯ',
-    'АВГУСТА',
-    'СЕНТЯБРЯ',
-    'ОКТЯБРЯ',
-    'НОЯБРЯ',
-    'ДЕКАБРЯ',
-]
-
-
-def get_date_from_str(date_str: str) -> date:
-    day_str, month_str, year_str = date_str.split(' ')
-    day = int(day_str)
-    month = MONTHS.index(month_str.upper()) + 1
-    if month < 1:
-        raise Exception(f"Не найден месяц: \"{date_str}\"")
-    year = int(year_str)
-    if year < 100:
-        today = date.today()
-        year += today.year // 100 * 100
-    return date(year, month, day)
+from .date_formats import get_date_from_str
 
 
 def extract_news_from_topic1(soup: BeautifulSoup):
@@ -111,3 +84,6 @@ def get_latest_news():
 
     # Return a tuple with the news for both topics
     return news_topic_1, news_topic_2
+
+
+
